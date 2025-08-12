@@ -1,6 +1,6 @@
 {
     "name": "collabhub",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "CollabHub CLI for local dev and deploy",
     "main": "bin/collabhub.js",
     "bin": {
