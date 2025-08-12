@@ -2,6 +2,8 @@ import runTunnel from "../tunnel/localtunnel.js";
 import { spawn } from "child_process";
 import { setTimeout } from "timers/promises";
 import { detectPort } from "../detect/projectDetector.js";
+import fs from "fs";
+import path from "path";
 
 export default async function dev(opts) {
     let port;
@@ -19,14 +21,28 @@ export default async function dev(opts) {
     }
 
     console.log(`🚀 Starting local dev server on port ${port}...`);
-    const devServer = spawn(
-        "npm",
-        ["run", "dev", "--", "--port", port.toString()],
-        {
-            stdio: "pipe",
-            shell: true,
+
+    // Detect if the project's dev script is likely Vite (accepts --port)
+    let passPortArg = false;
+    try {
+        const pkgPath = path.resolve(process.cwd(), "package.json");
+        if (fs.existsSync(pkgPath)) {
+            const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf-8"));
+            const devScript = pkg.scripts?.dev || "";
+            passPortArg = /vite|--port|-p\s+\d+/.test(devScript);
         }
-    );
+    } catch {}
+
+    const args = ["run", "dev"];
+    if (passPortArg) {
+        args.push("--", "--port", port.toString());
+    }
+
+    const devServer = spawn("npm", args, {
+        stdio: "pipe",
+        shell: true,
+        env: { ...process.env, PORT: port.toString() },
+    });
 
     // Capture and filter output
     devServer.stdout.on("data", (data) => {

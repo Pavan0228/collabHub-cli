@@ -10,11 +10,37 @@
     "scripts": {
         "dev": "node bin/collabhub.js dev"
     },
+    "keywords": [
+        "cli",
+        "tunnel",
+        "localtunnel",
+        "dev",
+        "preview"
+    ],
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Pavan0228/collabHub-cli.git"
+    },
+    "bugs": {
+        "url": "https://github.com/Pavan0228/collabHub-cli/issues"
+    },
+    "homepage": "https://github.com/Pavan0228/collabHub-cli#readme",
+    "engines": {
+        "node": ">=18"
+    },
+    "files": [
+        "bin",
+        "src",
+        "README.md",
+        "LICENSE"
+    ],
     "dependencies": {
+        "axios": "^1.7.0",
+        "collabhub-cli": "^1.0.0",
         "commander": "^12.1.0",
-        "localtunnel": "^2.0.2",
-        "simple-git": "^3.20.0",
         "fs-extra": "^11.2.0",
-        "axios": "^1.7.0"
+        "localtunnel": "^2.0.2",
+        "simple-git": "^3.20.0"
     }
 }
