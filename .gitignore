@@ -1,0 +1,56 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+out/
+lib/
+esm/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Caches
+.cache/
+.parcel-cache/
+.eslintcache
+.turbo/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+!.env.schema
+
+# OS/Editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# REPL history
+.node_repl_history
+
+# Temporary files
+tmp/
+temp/
+*.swp
+*.swo
+*~

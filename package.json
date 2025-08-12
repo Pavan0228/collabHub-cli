@@ -1,0 +1,20 @@
+{
+    "name": "collabhub-cli",
+    "version": "1.0.0",
+    "description": "CLI for CollabHub to run and expose projects",
+    "main": "bin/collabhub.js",
+    "bin": {
+        "collabhub": "./bin/collabhub.js"
+    },
+    "type": "module",
+    "scripts": {
+        "dev": "node bin/collabhub.js dev"
+    },
+    "dependencies": {
+        "commander": "^12.1.0",
+        "localtunnel": "^2.0.2",
+        "simple-git": "^3.20.0",
+        "fs-extra": "^11.2.0",
+        "axios": "^1.7.0"
+    }
+}
