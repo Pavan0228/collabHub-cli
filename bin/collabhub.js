@@ -15,7 +15,8 @@ program
 
 program
     .command("dev")
-    .description("Run project locally and expose to internet")
+    .description("Run project locally or a single file and expose to internet")
+    .argument("[file_path]", "Optional path to a file to run")
     .option("--port <port>", "Port to run the app")
     .action(dev);
 

@@ -5,7 +5,7 @@ import { detectPort } from "../detect/projectDetector.js";
 import fs from "fs";
 import path from "path";
 
-export default async function dev(opts) {
+async function runProject(opts) {
     let port;
     if (opts.port) {
         port = parseInt(opts.port, 10);
@@ -52,6 +52,7 @@ export default async function dev(opts) {
         "started server on", // Next.js
         "successfully started",
         "server is running on",
+        "serving!", // for `serve` package
     ];
 
     const onData = (data) => {
@@ -93,4 +94,66 @@ export default async function dev(opts) {
         console.log(`Dev server exited with code ${code}`);
         process.exit(code);
     });
+}
+
+async function runFile(filePath, opts) {
+    const ext = path.extname(filePath);
+    const port = parseInt(opts.port, 10) || 5000;
+    let serverProcess;
+
+    const commandMap = {
+        ".js": { cmd: "node", args: [filePath] },
+        ".py": { cmd: "python", args: ["-u", filePath] },
+        ".html": {
+            cmd: "npx",
+            args: ["serve", "-s", path.dirname(filePath), "-l", port],
+        },
+    };
+
+    const runner = commandMap[ext];
+    if (!runner) {
+        console.error(
+            `❌ Unsupported file type: ${ext}. Supported types are .js, .py, .html`
+        );
+        process.exit(1);
+    }
+
+    console.log(`🚀 Executing with: ${runner.cmd} ${runner.args.join(" ")}`);
+    serverProcess = spawn(runner.cmd, runner.args, {
+        stdio: "pipe",
+        shell: true,
+        env: { ...process.env, PORT: port.toString() },
+    });
+
+    serverProcess.stdout.on("data", (data) =>
+        console.log(data.toString().trim())
+    );
+    serverProcess.stderr.on("data", (data) =>
+        console.error(data.toString().trim())
+    );
+
+    console.log(`⏳ Waiting for server to start on port ${port}...`);
+    await setTimeout(3000);
+
+    console.log("🌐 Opening tunnel...");
+    try {
+        const url = await runTunnel(port);
+        console.log(`✅ Public preview available: ${url}`);
+    } catch (error) {
+        console.error("❌ Failed to create tunnel:", error.message);
+        console.log(`💡 Make sure your server is running on port ${port}`);
+    }
+
+    serverProcess.on("close", (code) => {
+        console.log(`Server process exited with code ${code}`);
+        process.exit(code);
+    });
+}
+
+export default async function dev(filePath, opts) {
+    if (filePath) {
+        await runFile(filePath, opts);
+    } else {
+        await runProject(opts);
+    }
 }

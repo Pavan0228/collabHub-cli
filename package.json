@@ -1,6 +1,6 @@
 {
     "name": "collabhub",
-    "version": "1.0.3",
+    "version": "1.1.0",
     "description": "CollabHub CLI for local dev and deploy",
     "main": "bin/collabhub.js",
     "bin": {
@@ -41,6 +41,7 @@
         "commander": "^12.1.0",
         "fs-extra": "^11.2.0",
         "localtunnel": "^2.0.2",
-        "simple-git": "^3.20.0"
+        "simple-git": "^3.20.0",
+        "serve": "^14.2.3"
     }
 }
