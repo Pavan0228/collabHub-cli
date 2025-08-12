@@ -45,31 +45,40 @@ export default async function dev(opts) {
     });
 
     // Capture and filter output
-    devServer.stdout.on("data", (data) => {
+    let serverReady = false;
+    const serverReadyLogs = [
+        "ready in", // Vite
+        "listening on port", // Express/Node
+        "started server on", // Next.js
+        "successfully started",
+        "server is running on",
+    ];
+
+    const onData = (data) => {
         const output = data.toString();
-        // Only show critical information, suppress verbose startup messages
-        if (output.includes("ready in") && output.includes("ms")) {
+        if (
+            !serverReady &&
+            serverReadyLogs.some((log) => output.toLowerCase().includes(log))
+        ) {
             console.log("✅ Dev server started successfully");
+            serverReady = true;
         }
+
+        // Filter out noisy logs but still show important info
         if (output.includes("error") || output.includes("Error")) {
             console.error(output.trim());
+        } else if (!output.includes("Browserslist")) {
+            // You can add more filters here if needed
+            // console.log(output.trim()); // Uncomment to see all logs for debugging
         }
-    });
+    };
 
-    devServer.stderr.on("data", (data) => {
-        const output = data.toString();
-        // Only show actual errors, not warnings like browserslist
-        if (
-            !output.includes("Browserslist") &&
-            !output.includes("update-browserslist-db")
-        ) {
-            console.error(output.trim());
-        }
-    });
+    devServer.stdout.on("data", onData);
+    devServer.stderr.on("data", onData);
 
     // Wait a few seconds for the dev server to start
     console.log("⏳ Waiting for dev server to start...");
-    await setTimeout(5000);
+    await setTimeout(8000); // Increased timeout for slower backend starts
 
     console.log("🌐 Opening tunnel...");
     try {

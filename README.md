@@ -5,7 +5,7 @@ A simple CLI to run your local dev server and expose it to the internet using lo
 ## Install
 
 ```bash
-npm install -g collabhub-cli
+npm install -g collabhub
 ```
 
 ## Usage

@@ -1,14 +1,15 @@
 {
-    "name": "collabhub-cli",
-    "version": "1.0.0",
-    "description": "CLI for CollabHub to run and expose projects",
+    "name": "collabhub",
+    "version": "1.0.2",
+    "description": "CollabHub CLI for local dev and deploy",
     "main": "bin/collabhub.js",
     "bin": {
-        "collabhub": "./bin/collabhub.js"
+        "collabhub": "bin/collabhub.js"
     },
     "type": "module",
     "scripts": {
-        "dev": "node bin/collabhub.js dev"
+        "dev": "node bin/collabhub.js dev",
+        "test": "echo \"Error: no test specified\" && exit 1"
     },
     "keywords": [
         "cli",
@@ -37,7 +38,6 @@
     ],
     "dependencies": {
         "axios": "^1.7.0",
-        "collabhub-cli": "^1.0.0",
         "commander": "^12.1.0",
         "fs-extra": "^11.2.0",
         "localtunnel": "^2.0.2",
